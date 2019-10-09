@@ -1,0 +1,115 @@
+<div>
+    <br />
+    <h3>{{textLabel}} Pessoa</h3>
+    <div class="card">
+        <div class="card-body">
+            <form [formGroup]="pesForm" novalidate>
+                <div class="form-group">
+                    <label class="col-md-4">Nome completo</label>
+                    <input type="text" class="form-control" formControlName="PesNome" #PesNome
+                        [(ngModel)]="pessoa.nome" />
+                </div>
+                <div *ngIf="pesForm.controls['PesNome'].invalid && (pesForm.controls['PesNome'].dirty || pesForm.controls['PesNome'].touched)"
+                    class="alert alert-danger">
+                    <div *ngIf="pesForm.controls['PesNome'].errors.required">
+                        Nome é obrigatório.
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-4">CPF </label>
+                    <input type="text" class="form-control" formControlName="PesCPF" #PesCPF [(ngModel)]="pessoa.cpf" 
+                        [clearIfNotMatch]="true" matInput mask="000.000.000-00"/>
+                </div>
+                <div *ngIf="pesForm.controls['PesCPF'].invalid && (pesForm.controls['PesCPF'].dirty || pesForm.controls['PesCPF'].touched)"
+                    class="alert alert-danger">
+                    <div *ngIf="pesForm.controls['PesCPF'].errors.required">
+                        CPF é obrigatório.
+                    </div>
+                    <div *ngIf="pesForm.controls['PesCPF'].errors.cpfNotValid">
+                        O CPF informado não é válido.
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-4">Telefone </label>
+                    <input type="text" class="form-control" formControlName="PesTelefone"
+                         #PesTelefone [(ngModel)]="pessoa.telefone" 
+                         [clearIfNotMatch]="true"
+                         matInput mask="(00) 0000-00009" />
+                </div>
+                <div *ngIf="pesForm.controls['PesTelefone'].invalid && (pesForm.controls['PesTelefone'].dirty || pesForm.controls['PesTelefone'].touched)"
+                    class="alert alert-danger">
+                    <div *ngIf="pesForm.controls['PesTelefone'].errors.required">
+                        Telefone é obrigatório.
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-4">Data de nascimento </label>
+                    <input type="text" class="form-control" formControlName="PesDtNasc" #PesDtNasc [(ngModel)]="pessoa.dtnasc" 
+                        [clearIfNotMatch]="true" matInput mask="00/00/0000" />
+                </div>
+                <div *ngIf="pesForm.controls['PesDtNasc'].invalid && (pesForm.controls['PesDtNasc'].dirty || pesForm.controls['PesDtNasc'].touched)"
+                    class="alert alert-danger">
+                    <div *ngIf="pesForm.controls['PesDtNasc'].errors.required">
+                        Data de nascimento é obrigatória.
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-4">Endereço </label>
+                    <input type="text" class="form-control" formControlName="PesEndereco" #PesEndereco [(ngModel)]="pessoa.endereco"/>
+                </div>
+                <div *ngIf="pesForm.controls['PesEndereco'].invalid && (pesForm.controls['PesEndereco'].dirty || pesForm.controls['PesEndereco'].touched)"
+                    class="alert alert-danger">
+                    <div *ngIf="pesForm.controls['PesEndereco'].errors.required">
+                        Endereço é obrigatório.
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-4">Veículo</label>
+                        <select [(ngModel)]="selectedMarca" class="form-control"
+                                (change)= "changeMarcaVeiculo(selectedMarca)"
+                                formControlName="PesVeiculoMarca" #PesVeiculoMarca>
+                            <option value="">Selecione a marca do veículo</option>
+                            <option *ngFor="let marca of veiculoMarcas" [(ngValue)]="marca.codigo">{{marca.nome}}</option>
+                        </select>
+                        <select [(ngModel)]="selectedModelo" class="form-control"
+                                formControlName="PesVeiculoModelo" #PesVeiculoModelo>
+                            <option *ngIf="selectedMarca == ''" value="">---</option>
+                            <ng-container *ngIf="selectedMarca != ''">
+                                <option  value="">Selecione o modelo do veiculo</option>
+                                <option *ngFor="let modelo of veiculoModelos" 
+                                    [(ngValue)]="modelo.codigo">{{modelo.nome}}</option>
+                            </ng-container>
+                        </select>
+                </div>
+                
+                <div *ngIf="pesForm.controls['PesVeiculoMarca'].invalid && (pesForm.controls['PesVeiculoMarca'].dirty || pesForm.controls['PesVeiculoMarca'].touched)"
+                    class="alert alert-danger">
+                    <div *ngIf="pesForm.controls['PesVeiculoMarca'].errors.required">
+                        Informe o veículo.
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <a routerLink="/pessoas" class="btn btn-secondary" routerLinkActive="active">
+                        voltar
+                    </a>
+                    <button (click)="savePessoa (
+                                        PesNome.value, 
+                                        PesCPF.value, 
+                                        PesTelefone.value, 
+                                        PesDtNasc.value, 
+                                        PesEndereco.value)" 
+                        type="submit" class="btn btn-primary"
+                        [disabled]="pesForm.pristine || pesForm.invalid">
+                        {{textLabel}}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
